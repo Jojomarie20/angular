@@ -1,0 +1,203 @@
+<div class="navbar mb-5">
+    <div class="navbar-left">
+        <img src="https://static.vecteezy.com/system/resources/previews/003/529/153/original/business-to-do-list-flat-icon-modern-style-free-vector.jpg" alt="Jojo'sList" class="system-photo">
+        <h1>Jojo's ToDo List</h1>
+    </div>
+    <div class="navbar-center">
+        <span class="navbar-user" *ngIf="username">Welcome! {{ username }}.</span>
+    </div>
+    <div class="navbar-right">
+        <button type="button" class="btn btn-outline-danger round-btn" (click)="logout()">Logout</button>
+    </div>
+</div>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-actions">
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#taskModal">
+                    Add Task
+                </button>
+                <div class="dropdown d-inline-block">
+                    <button  class="btn btn-danger mb-3" (click)="deleteSelectedTasks()">Delete Task</button>
+                    <button class="btn btn-secondary dropdown-toggle mb-3" type="button" id="bulkActionsDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Move Task
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="bulkActionsDropdown">
+                        <li><a class="dropdown-item" (click)="moveSelectedTasks('todo')">To To Do</a></li>
+                        <li><a class="dropdown-item" (click)="moveSelectedTasks('inprogress')">To In
+                                Progress</a></li>
+                        <li><a class="dropdown-item" (click)="moveSelectedTasks('done')">To Done</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Kanban Board -->
+        <div class="kanban-board">
+            <div class="kanban-column col1">
+                <div class="kanban-header">
+                    <h2>To Do</h2>
+                    <span class="task-count">{{ todotask.length }} Tasks</span>
+                </div>
+                <div cdkDropList id="todo" #todoList="cdkDropList" [cdkDropListData]="todotask"
+                    [cdkDropListConnectedTo]="[doneList, inprogressList]" class="list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let item of todotask; trackBy: trackByFn" class="list-item" cdkDrag
+                        [ngClass]="{'due-today': isDueToday(item.due_date), 'due-tomorrow': isDueTomorrow(item.due_date), 'overdue': isOverdue(item.due_date)}">
+                        <div class="check">
+                            <input type="checkbox" [(ngModel)]="item.selected" class="custom-checkbox">
+                            <div class="items">
+                                <div class="task-task">{{item.task}}</div>
+                                <div class="task-description">{{item.description}}</div>
+                                <div class="task-due-date">{{item.due_date | date}}</div>
+                                <div *ngIf="isDueToday(item.due_date)" class="due-today-text">Due date today</div>
+                                <div *ngIf="isDueTomorrow(item.due_date)" class="due-tomorrow-text">Due date tomorrow
+                                </div>
+                                <div *ngIf="isOverdue(item.due_date)" class="overdue-text">Due date already passed</div>
+                            </div>
+                        </div>
+                        <div class="buts">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editTaskModal" (click)="edit(item.id)">✎</button>
+                            <button class="btn btn-outline-danger btn-sm" (click)="deleteTask(item)">✗</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kanban-column col2">
+                <div class="kanban-header">
+                    <h2>In Progress</h2>
+                    <span class="task-count">{{ inprogresstask.length }} Tasks</span>
+                </div>
+                <div cdkDropList id="inprogress" #inprogressList="cdkDropList" [cdkDropListData]="inprogresstask"
+                    [cdkDropListConnectedTo]="[todoList, doneList]" class="list" (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let item of inprogresstask; trackBy: trackByFn" class="list-item" cdkDrag
+                        [ngClass]="{'due-today': isDueToday(item.due_date), 'due-tomorrow': isDueTomorrow(item.due_date), 'overdue': isOverdue(item.due_date)}">
+                        <div class="check">
+                            <input type="checkbox" [(ngModel)]="item.selected" class="custom-checkbox">
+                            <div class="items">
+                                <div class="task-task">{{item.task}}</div>
+                                <div class="task-description">{{item.description}}</div>
+                                <div class="task-due-date">{{item.due_date | date}}</div>
+                                <div *ngIf="isDueToday(item.due_date)" class="due-today-text">Due date today</div>
+                                <div *ngIf="isDueTomorrow(item.due_date)" class="due-tomorrow-text">Due date tomorrow
+                                </div>
+                                <div *ngIf="isOverdue(item.due_date)" class="overdue-text">Due date already passed</div>
+                            </div>
+                        </div>
+                        <div class="buts">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editTaskModal" (click)="edit(item.id)">✎</button>
+                            <button class="btn btn-outline-danger btn-sm" (click)="deleteTask(item)">✗</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kanban-column col3">
+                <div class="kanban-header">
+                    <h2>Done</h2>
+                    <span class="task-count">{{ donetask.length }} Tasks</span>
+                </div>
+                <div cdkDropList id="done" #doneList="cdkDropList" [cdkDropListData]="donetask"
+                    [cdkDropListConnectedTo]="[todoList, inprogressList]" class="list" (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let item of donetask; trackBy: trackByFn" class="list-item" cdkDrag>
+                        <div class="check">
+                            <input type="checkbox" [(ngModel)]="item.selected" class="custom-checkbox">
+                            <div class="items">
+                                <div class="task-task">{{item.task}}</div>
+                                <div class="task-due-date">{{item.updatedat | date}}</div>
+                                <div class="task-done-text">DONE</div>
+                            </div>
+                        </div>
+                        <div class="buts">
+                            <button class="btn btn-outline-danger btn-sm" (click)="deleteTask(item)">✗</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Task Modal -->
+        <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="taskModalLabel">Add New Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+                            <div class="mb-3">
+                                <label for="task" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="task"
+                                    formControlName="task">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="description"
+                                    formControlName="description">
+                            </div>
+                            <div class="mb-3">
+                                <label for="due-date" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="due-date" formControlName="due_date">
+                            </div>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select id="status" class="form-control" formControlName="status">
+                                    <option value="todo">To Do</option>
+                                    <option value="inprogress">In Progress</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Add Task</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Task Modal -->
+        <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="editTaskForm" (ngSubmit)="onEditSubmit()">
+                            <div class="mb-3">
+                                <label for="edit-task" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="edit-task"
+                                    formControlName="task">
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="edit-description"
+                                    formControlName="description">
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-due-date" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="edit-due-date" formControlName="due_date">
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-status" class="form-label">Status</label>
+                                <select id="edit-status" class="form-control" formControlName="status">
+                                    <option value="todo">To Do</option>
+                                    <option value="inprogress">In Progress</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>

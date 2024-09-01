@@ -1,0 +1,309 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #6796b1;
+  color: #fff;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.system-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.navbar-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-user {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.round-btn {
+  border-radius: 20px;
+  color: rgb(255, 255, 255);
+  font-size: large;
+  background-color: rgba(255, 0, 0, 0.781);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.kanban-board {
+  display: flex;
+  justify-content: space-between;
+}
+
+.kanban-column {
+  flex: 1;
+  margin: 0 10px;
+  background-color: #f4f4f9;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.col1 {
+  background-color: rgb(98, 129, 189);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.col2 {
+  background-color: rgb(203, 226, 100);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.col3 {
+  background-color: rgb(120, 221, 120);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.kanban-header h2 {
+  font-size: 22px;
+  margin: 0;
+  margin-left: 8px;
+}
+
+.task-count {
+  margin-right: 10px;
+  font-size: 14px;
+  color: #504c4c;
+}
+
+.list {
+  background-color: #f8f1f1;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f4f4f9;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+}
+
+.check input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* app.component.css or styles.css */
+.custom-checkbox {
+  /* Hide the default checkbox */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #abb4bb;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.custom-checkbox:checked {
+  background-color: #493ad3;
+  border-color: #72787e;
+}
+
+.custom-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.buts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.buts .btn {
+  margin-left: 5px;
+}
+
+.buts .btn-sm {
+  margin: 3px;
+  border: none;
+}
+
+/*.due-today {
+  background-color: #fff3cd;
+}*/
+
+.due-today-text {
+  color: black;
+  font-weight: bold;
+  background-color: #ecdca4;
+  border-radius: 5px;
+}
+
+/*.due-tomorrow {
+  background-color: #cce5ff;
+}*/
+
+.due-tomorrow-text {
+  color: black;
+  font-weight: bold;
+  background-color: #9ec3eb;
+  border-radius: 5px; 
+}
+
+/*.overdue {
+  background-color: #f8d7da;
+}*/
+
+.overdue-text {
+  color: black;
+  font-weight: bold;
+  background-color: #f7b4ba;
+  border-radius: 5px;
+}
+
+.task-done-text {
+  font-weight: bold;
+  color: rgb(12, 167, 12);
+  
+}
+
+.task-task{
+  font-size: medium;
+  font-weight: bold;
+}
+
+.task-due-date{
+  color: #9c8e8e;
+}
+
+/*DONT REMOVE THIS*/
+.cdk-drag-preview {
+  border-radius: 10px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  margin: 0 auto;
+}
+
+.cdk-drop-list-dragging.cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+/* MODAL DESIGN/S */
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+/* Full width button */
+.btn-primary.w-100 {
+  width: 100%;
+}
+
+.dropdown .btn-danger{
+  margin-right: 15px;
+}
+
+.dropdown-menu{
+  cursor: pointer;
+}
+
